@@ -1,7 +1,9 @@
 const argv     = require('minimist')(process.argv.slice(2));  //[0] = node.exe, [1]=.../index.js
+const debug    = require('debug')('stj-server');
 const fs       = require('fs');
 const mongoose = require('mongoose');
 const meetDbo  = require('./swimMeetDbo');
+const server   = require('./apiServer');
 
 
 // main - run the STJ Server
@@ -28,8 +30,10 @@ function main()
 
         mongoose.connect(mongoDSN, connectOpts)
                 .then( async() => {
-                    await runProgram(pgmOptions);
-                    mongoose.disconnect().then (resolve);
+                    const finished = await runProgram(pgmOptions);
+                    if (finished) {
+                        mongoose.disconnect().then (resolve);
+                    }
                 });
     });
 }
@@ -45,7 +49,7 @@ function checkCmdLineArgs(argv)
         watchFile: false
     };
 
-    console.log(argv);
+    debug(argv);
     if (argv.file &&  typeof(argv.file) === 'boolean') {
         pgmOptions.errors.push('The --file option requires an argument.');
     }
@@ -67,10 +71,16 @@ function checkCmdLineArgs(argv)
 }
 
 
-// Run the requested functionality.  If running express or file watcher, will not return until ^C
+function handleMeetFileUpdate(meetJsonFile)
+{
+    debug(`${meetJsonFile} has changed, but we have not implemented change processing yet!`);
+}
+
+
+// Run/start the requested functionality. Return true if all processing has finished and false otherwise
 // TODO:  probably should add an admin capability to shutdown.
 async function runProgram(pgmOptions) {
-    console.log("Inside runProgram");
+    debug('Inside runProgram');
 
     // meetFile --> save the data into the DB
     if (pgmOptions.meetFile) {
@@ -78,17 +88,39 @@ async function runProgram(pgmOptions) {
         await meetDbo.saveToDB(meetJson);
     }
 
-    // watchFile --> watch for changes to meetFile (not implemented yet)
     if (pgmOptions.watchFile) {
-        console.log('Watch file processing not implemented yet.');
+        watchFile(pgmOptions.meetFile);
     }
 
     if (pgmOptions.runExpress) {
-        console.log('Starting up express ...');
-        // await startExpress();
+        server.startServer(null);
     }
 
-    console.log('leaving runProgram');
+    // we're finished if we aren't running express or watching the meet file
+    const finishedProcessing = !(pgmOptions.runExpress || pgmOptions.watchFile);
+    debug(`leaving runProgram with finished = ${finishedProcessing}`);
+    return (finishedProcessing);
+}
+
+
+function watchFile(meetJsonFile)
+{
+    debug(`Watching for changes to file: ${meetJsonFile}`);
+
+    // Need to debounce so that we don't get multiple messages for a single update
+    let fsWait = false;
+    fs.watch(meetJsonFile, (event, filename) => {
+        if (filename) {
+            if (fsWait) { /* triggered again w/in 100 ms --> do nothing */ }
+            else {
+                fsWait = true;
+                setTimeout(() => {
+                    handleMeetFileUpdate(meetJsonFile);
+                    fsWait = false;
+                }, 100);
+            }
+        }
+    });
 }
 
 
@@ -105,9 +137,9 @@ function usage() {
 
 // ********** Main program starts here
 main().then( () => {
-    console.log('STJ Server stopping ...');
+    debug('STJ Server stopping ...');
     process.exit(0);
 }).catch( (err) => {
-    console.log('FAILURE: ' + err);
+    console.error('FAILURE: ' + err);
     process.exit(1)
 });

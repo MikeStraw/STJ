@@ -1,8 +1,9 @@
 // This module depends on an open Mongoose connection to the Mongo DB
-const Event    = require('./models/event');
-const Heat     = require('./models/heat');
-const Meet     = require('./models/meet');
-const moment   = require('moment-timezone');
+const debug  = require('debug')('stj-server');
+const Event  = require('./models/event');
+const Heat   = require('./models/heat');
+const Meet   = require('./models/meet');
+const moment = require('moment-timezone');
 
 
 // NOTE:  this function updates meetJson to remove the event array from each session.
@@ -70,7 +71,7 @@ function makeHeatEntryFromEventEntry(eventEntry) {
 function saveEventData(eventJson) {
     // we don't want to save the entry data here
     const event      = {"number": eventJson.number, "desc": eventJson.desc,
-        "meet_id": eventJson.meet_id, "session_num": eventJson.session_num};
+                        "meet_id": eventJson.meet_id, "session_num": eventJson.session_num};
     const queryObj   = {"meet_id": eventJson.meet_id, "number": eventJson.number, "session_num": eventJson.session_num};
     const updateOpts = {"new": true, "upsert": true, "runValidators": true};
 
@@ -101,11 +102,10 @@ function saveMeetData(meetJson) {
 module.exports = {
 
     saveToDB: async function(meetJson) {
-        console.log("saveToDB called");
         const events = extractEventsFromMeetSessions(meetJson);
         const meet   = await saveMeetData(meetJson);
         const meetId = meet._id;
-        console.log("Saved/updated meet id: " + meetId);
+        debug(`Saved/updated meet id: ${meetId}`);
 
         for (const event of events) {
             event.meet_id = meetId;

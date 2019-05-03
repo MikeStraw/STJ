@@ -5,7 +5,7 @@
     "main": "app.js",
     "scripts": {
         "lint": "eslint **/*.js --ignore-pattern node_modules/ --fix",
-        "start": "node ./bin/www.js",
+        "start": "node index.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "keywords": [
