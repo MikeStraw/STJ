@@ -1,13 +1,43 @@
 <template>
-    <HelloWorld />
+    <v-container fluid>
+        <v-layout row text-xs-center wrap indigo>
+            <v-flex xs12>
+                <h1 class="display-3 font-weight-bold font-italic white--text">
+                    Stroke & Turn Judge
+                </h1>
+            </v-flex>
+        </v-layout>
+
+        <v-layout row>
+            <v-flex xs12 class="mt-5">
+                <h3 v-if="loggedIn">
+                    Welcome back, view the list of available meets
+                    <v-btn flat right to="meets" class="ml-0 text-lowercase blue--text text--lighten-2">
+                        here.
+                    </v-btn>
+                </h3>
+                <h3 v-else>
+                    To get started:
+                    <v-btn flat right to="login" class="ml-0 text-lowercase blue--text text--lighten-2">
+                        sign in.
+                    </v-btn>
+                </h3>
+            </v-flex>
+        </v-layout>
+    </v-container>
 </template>
 
 <script>
-import HelloWorld from "../components/HelloWorld";
+import { mapGetters } from 'vuex';
 
 export default {
-    components: {
-        HelloWorld
+    name: 'login',
+    data: () => ({
+    }),
+    computed: {
+        ...mapGetters({
+            loggedIn: 'auth/loggedIn'
+        })
     }
 };
 </script>
