@@ -1,3 +1,4 @@
+import jwt from 'jsonwebtoken';
 const TOKEN_KEY = 'access_token';
 
 /**
@@ -7,16 +8,20 @@ const TOKEN_KEY = 'access_token';
  * accessed through this instance.
  **/
 const TokenService = {
+    decodeToken(token) {
+        return jwt.decode(token);
+    },
+
     getToken() {
-        return localStorage.getItem(TOKEN_KEY)
+        return localStorage.getItem(TOKEN_KEY);
     },
 
     saveToken(accessToken) {
-        localStorage.setItem(TOKEN_KEY, accessToken)
+        localStorage.setItem(TOKEN_KEY, accessToken);
     },
 
     removeToken() {
-        localStorage.removeItem(TOKEN_KEY)
+        localStorage.removeItem(TOKEN_KEY);
     }
 };
 

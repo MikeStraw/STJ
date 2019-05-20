@@ -8,6 +8,7 @@ const path         = require('path');
 const app      = express();
 const nodeEnv  = process.env.ENV ? process.env.ENV : 'production';
 const validPin = process.env.PIN ? process.env.PIN : '98765';
+debug(`pin set to: ${validPin}`);
 app.set('pin', validPin);
 app.set('env', nodeEnv);
 

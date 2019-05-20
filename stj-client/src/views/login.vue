@@ -85,16 +85,14 @@ export default {
             authenticationError: state => state.auth.authenticationError
         })
     },
-    //computed: mapState(['auth/authenticating', 'auth/authenticationErrorCode', 'auth/authenticationError']),
     methods: {
         clearErrorMessage() {
             this.$store.dispatch('auth/clearError');
         },
 
         async submitForm() {
-            console.log('login.vue - submitForm, dispatching authStore/login');
             const rc = await this.$store.dispatch('auth/login', {first: this.first, last: this.last, pin: this.pin});
-            console.log('login.vue - submitForm, return from dispatch: ' + rc);
+
             // if 200 - OK, move on to /meets
             if (rc) {
                 this.$refs.form.reset();

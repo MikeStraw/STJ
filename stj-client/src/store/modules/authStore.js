@@ -32,7 +32,6 @@ const actions = {
         commit('clearError');
     },
     async login({ commit }, { first, last, pin }) {
-        console.log('authStore.js: action - login');
         commit('loginRequest');
 
         try {
@@ -41,13 +40,13 @@ const actions = {
 
             return true;
         } catch (e) {
-            console.log(' ... caught error: ');
-            console.log(e);
+            console.log('authStore::login caught error!');
+//            console.log(e);
             if (e instanceof AuthenticationError) {
                 commit('loginError', { errorCode: e.errorCode, errorMessage: e.message });
             }
             else if (!e.response) {
-                commit('loginError'), { errorCode: 1, errorMessage: 'Error: connecting to the server.'};
+                commit('loginError', { errorCode: 1, errorMessage: 'Error: connecting to the server.'});
             }
             else {
                 commit('loginError', { errorCode: e.response.status, errorMessage: e.response.statusText });

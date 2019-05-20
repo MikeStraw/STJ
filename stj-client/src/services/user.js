@@ -1,4 +1,5 @@
 import apiSvc from '../services/api';
+import store from '../store';
 import tokenSvc from '../services/token';
 
 class AuthenticationError extends Error {
@@ -18,18 +19,22 @@ const UserService = {
      * @throws AuthenticationError
      **/
     login: async function(first, last, pin) {
-        const user = {
+        const userRequest = {
             firstName: first,
             lastName: last,
             pin: pin
         };
 
         try {
-            const response = await apiSvc.login(user);
-            tokenSvc.saveToken(response.data.token);
-            apiSvc.addAuthHeader(response.data.token);
+            const response = await apiSvc.login(userRequest);
+            const token = response.data.token;
+            const userResponse  = tokenSvc.decodeToken(token);
 
-            return response.data.token;
+            tokenSvc.saveToken(token);
+            apiSvc.addAuthHeader(token);
+            store.dispatch('user/save', userResponse);
+
+            return token;
         } catch (error) {
             throw new AuthenticationError(error.response.status, error.response.data.message, error.response.statusText);
         }
@@ -44,6 +49,7 @@ const UserService = {
         // Remove the token and remove Authorization header from Api Service as well
         tokenSvc.removeToken();
         apiSvc.removeAuthHeader();
+        store.dispatch('user/remove');
     }
 };
 
