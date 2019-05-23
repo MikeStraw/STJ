@@ -1,15 +1,7 @@
 <template>
     <v-container fluid>
-        <v-layout row text-xs-center wrap indigo>
-            <v-flex xs12>
-                <h1 class="display-3 font-weight-bold font-italic white--text">
-                    Stroke & Turn Judge
-                </h1>
-            </v-flex>
-        </v-layout>
-
         <v-layout row>
-            <v-flex xs12 class="mt-5">
+            <v-flex xs12>
                 <h3 v-if="loggedIn">
                     Welcome back, view the list of available meets
                     <v-btn flat right to="meets" class="ml-0 text-lowercase blue--text text--lighten-2">

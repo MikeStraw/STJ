@@ -1,5 +1,6 @@
 <template>
     <v-app class="indigo lighten-5">
+        <stj-header></stj-header>
         <v-content>
             <transition name="fade" mode="out-in" >
                 <router-view />
@@ -9,15 +10,20 @@
 </template>
 
 <script>
+import stjHeader from './components/toolbarHeader';
 export default {
     name: 'App',
     data() {
         return {
             //
         };
+    },
+    components: {
+        stjHeader
     }
 };
 </script>
+
 <style>
     .fade-enter {
         opacity: 0;

@@ -1,69 +1,59 @@
 <template>
-    <div>
-        <v-toolbar app dark class="indigo">
-            <v-toolbar-title>
-                <span>Stroke & Turn Judge</span>
-            </v-toolbar-title>
-            <v-spacer></v-spacer>
-        </v-toolbar>
+    <v-form ref="form" v-model="valid">
+        <v-container>
+            <v-layout row>
+                <v-flex>
+                    <p>To log in, fill in all fields and click the submit button.</p>
+                </v-flex>
+            </v-layout>
+            <v-layout row>
+                <v-flex sm3>
+                    <v-text-field v-model="first"
+                                  :rules="requiredRules"
+                                  label="First Name"
+                                  required>
 
-        <v-form ref="form" v-model="valid">
-            <v-container>
-                <v-layout row>
-                    <v-flex>
-                        <p>To log in, fill in all fields and click the submit button.</p>
-                    </v-flex>
-                </v-layout>
-                <v-layout row>
-                    <v-flex sm3>
-                        <v-text-field v-model="first"
-                                      :rules="requiredRules"
-                                      label="First Name"
-                                      required>
+                    </v-text-field>
+                </v-flex>
+                <v-flex sm3>
+                    <v-text-field v-model="last"
+                                  :rules="requiredRules"
+                                  label="Last Name"
+                                  required>
 
-                        </v-text-field>
-                    </v-flex>
-                    <v-flex sm3>
-                        <v-text-field v-model="last"
-                                      :rules="requiredRules"
-                                      label="Last Name"
-                                      required>
+                    </v-text-field>
+                </v-flex>
+                <v-flex sm2>
+                    <v-text-field v-model="pin"
+                                  :rules="requiredRules"
+                                  label="PIN"
+                                  required>
 
-                        </v-text-field>
-                    </v-flex>
-                    <v-flex sm2>
-                        <v-text-field v-model="pin"
-                                      :rules="requiredRules"
-                                      label="PIN"
-                                      required>
-
-                        </v-text-field>
-                    </v-flex>
-                </v-layout>
-                <v-layout row>
-                    <v-btn :disabled="!valid"
-                           color="success"
-                           @click="submitForm">
-                        Submit
+                    </v-text-field>
+                </v-flex>
+            </v-layout>
+            <v-layout row>
+                <v-btn :disabled="!valid"
+                       color="success"
+                       @click="submitForm">
+                    Submit
+                </v-btn>
+            </v-layout>
+            <v-layout row v-if="authenticating">
+                <v-flex>
+                    <h1 color="info" >Authenticating ...</h1>
+                </v-flex>
+            </v-layout>
+            <v-layout row v-if="authenticationErrorCode">
+                <v-flex>
+                    <h1 color="error" >{{authenticationErrorCode}} - {{authenticationError}}</h1>
+                    <v-btn small color="error" @click="clearErrorMessage">
+                        Clear Error Message
                     </v-btn>
-                </v-layout>
-                <v-layout row v-if="authenticating">
-                    <v-flex>
-                        <h1 color="info" >Authenticating ...</h1>
-                    </v-flex>
-                </v-layout>
-                <v-layout row v-if="authenticationErrorCode">
-                    <v-flex>
-                        <h1 color="error" >{{authenticationErrorCode}} - {{authenticationError}}</h1>
-                        <v-btn small color="error" @click="clearErrorMessage">
-                            Clear Error Message
-                        </v-btn>
-                    </v-flex>
-                </v-layout>
-            </v-container>
-        </v-form>
-
-    </div>
+                </v-flex>
+            </v-layout>
+        </v-container>
+    </v-form>
 </template>
 
 <script>

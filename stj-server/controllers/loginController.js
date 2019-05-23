@@ -27,7 +27,13 @@ exports.login = async function(req, res, next) {
         return res.status(400).json( {message: 'Missing information.'} );
     }
 
-    const user = await findUser(first.trim(), last.trim());
-    const token = tokenSvc.sign( user.toObject() ); // toObject() call needed to create js object
-    res.json( {token: token} );
+    try {
+        const user = await findUser(first.trim(), last.trim());
+        const token = tokenSvc.sign( user.toObject() ); // toObject() call needed to create js object
+        res.json( {token: token} );
+    }
+    catch(err) {
+        debug('loginController: caught database error: %O.', err);
+        return res.status(500).json( {message: 'Database error on the server.'} );
+    }
 };

@@ -4,7 +4,7 @@
     "description": "The electronic Stroke and Turn Judging (STJ) server.",
     "main": "app.js",
     "scripts": {
-        "lint": "eslint **/*.js --ignore-pattern node_modules/ --fix",
+        "lint": "eslint **/*.js --ignore-pattern node_modules/ ",
         "start": "node index.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },

@@ -1,3 +1,4 @@
+const apiRoutes    = require('./routes/api');
 const bodyParser   = require('body-parser');
 const cors         = require('cors');
 const debug        = require('debug')('stj-server');
@@ -18,7 +19,7 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/login', loginRoutes);
-//app.use('/api', apiRoutes);
+app.use('/api', apiRoutes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
