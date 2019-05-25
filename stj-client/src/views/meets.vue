@@ -39,6 +39,7 @@
 </template>
 
 <script>
+import eventBus from '../services/eventBus';
 import { mapState } from 'vuex';
 
 export default {
@@ -70,16 +71,21 @@ export default {
             const rc = await this.$store.dispatch('meet/loadMeets');
             console.log(`dispatch(meet/loadMeets) returns ${rc}.`);
         },
+        logout() {
+            this.$store.dispatch('meet/clearMeets');
+        },
         selectMeet(meet, session){
             const meetId = meet._id;
             const sessNum = session.number;
             console.log(`calling dispatch(meet/setActiveMeet, { ${meetId}, ${sessNum} })` );
-            //this.$store.dispatch('meet/setActiveMeet', { meetId: meetId, sessionNum: sessNum });
-            //this.$router.push('/events');
+            if (this.$store.dispatch('meet/setActiveMeet', { meetId: meetId, sessionNum: sessNum })) {
+                this.$router.push('/events');
+            }
         }
     },
     created() {
         this.loadMeets();
+        eventBus.$on('LOGOUT', this.logout);
     },
     watch: {
         '$route': 'loadMeets'

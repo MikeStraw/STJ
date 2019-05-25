@@ -13,6 +13,7 @@
 </template>
 
 <script>
+import eventBus from '../services/eventBus';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -26,9 +27,9 @@ export default {
         })
     },
     methods: {
-        // TODO:  Publish/emit the logout so other components could take action.
         logout() {
-            this.$store.dispatch('auth/logout');
+            console.log('emitting LOGOUT from header.');
+            eventBus.$emit('LOGOUT');
         }
     }
 }

@@ -57,6 +57,7 @@
 </template>
 
 <script>
+import eventBus from '../services/eventBus';
 import { mapState } from 'vuex';
 
 export default {
@@ -79,7 +80,9 @@ export default {
         clearErrorMessage() {
             this.$store.dispatch('auth/clearError');
         },
-
+        logout() {
+            this.$store.dispatch('auth/logout');
+        },
         async submitForm() {
             const rc = await this.$store.dispatch('auth/login', {first: this.first, last: this.last, pin: this.pin});
 
@@ -89,6 +92,9 @@ export default {
                 this.$router.push(this.$router.history.current.query.redirect || '/meets');
             }
         }
+    },
+    mounted() {
+        eventBus.$on('LOGOUT', this.logout);
     }
 };
 </script>
