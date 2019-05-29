@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import EventPage from './views/event';
 import EventsPage from './views/events';
 import HomePage from './views/Home';
 import LoginPage from './views/login';
@@ -17,6 +18,11 @@ const router = new Router({
             name: 'home',
             component: HomePage,
             meta: { public: true }
+        },
+        {
+            path: '/event',
+            name: 'event',
+            component: EventPage
         },
         {
             path: '/events',

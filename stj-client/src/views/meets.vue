@@ -4,7 +4,7 @@
             <v-flex mt-3>
                 <h3>Meet List</h3>
                 <p v-if="loadingError" class="red--text text--darken-3 subheading">Error: {{loadingError}}</p>
-                <p v-else-if="loading" class="green-text">Loading meets from server ...</p>
+                <p v-else-if="loading" class="blue-text">Loading meets from server ...</p>
                 <p v-else-if="meets.length > 0">Click on a session to begin.</p>
                 <p v-else class="font-italic"> No meets available.</p>
             </v-flex>
@@ -72,6 +72,7 @@ export default {
             console.log(`dispatch(meet/loadMeets) returns ${rc}.`);
         },
         logout() {
+            console.log('meets.vue: logout called.');
             this.$store.dispatch('meet/clearMeets');
         },
         selectMeet(meet, session){

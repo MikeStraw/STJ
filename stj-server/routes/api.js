@@ -21,6 +21,7 @@ const verifyToken = (req, res, next) => {
 };
 
 // routes mounted to /api
+router.get('/event/:eventId/heats', controller.getHeats);
 router.get('/meet/:meetId/session/:sessNum/events', controller.getEvents);
 router.get('/meets', verifyToken, controller.getMeets);
 

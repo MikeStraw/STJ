@@ -34,6 +34,7 @@ export default {
     },
     methods: {
         logout() {
+            console.log('home.logout called.');
             this.$store.dispatch('auth/logout');
         }
     },

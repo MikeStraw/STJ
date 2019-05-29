@@ -88,6 +88,7 @@ const mutations = {
     },
 
     logoutSuccess(state) {
+        console.log('authStore logoutSuccess removing accessToken');
         state.accessToken = '';
     }
 };

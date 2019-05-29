@@ -15,7 +15,7 @@ const ApiService = {
         delete axios.defaults.headers.common['Authorization'];
     },
 
-    getHeats(eventId) {
+    getEntries(eventId) {
         return axios.get(`/event/${eventId}/heats`);
     },
 

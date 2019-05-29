@@ -14,9 +14,44 @@ const getters = {
 };
 
 const actions = {
+    clearEvents({ commit }) {
+        commit('clearEventData');
+    },
+
     // Clear out the meets and activeMeet cache
     clearMeets({ commit }) {
         commit('clearMeetData');
+    },
+
+    // loadEntries - Get all the entries for a specific event identified by the event ID
+    //               payload => eventId
+    async loadEntries({ commit, state }, payload) {
+        if (!state.activeEvent) {
+            commit('dataRequestError', { code: 3, message: 'Error: No event was selected.'});
+            return false;
+        }
+
+        try {
+            const eventId  = payload.eventId;
+            const response = await apiSvc.getEntries(eventId);
+            const entries = response.data;
+            console.log(`apiSvd.getEntries() returned with entries.length=${entries.length}`);
+
+            commit('entryDataReceived', entries);
+            return entries;
+        }
+        catch(err) {
+            console.log('meetStore::loadEntries caught error!');
+            console.log(err);
+            if (!err.response) {
+                commit('dataRequestError', { code: 1, message: 'Error: connecting to the server.'});
+            }
+            else {
+                //err.reponse.status, err.response.data.message, err.response.statusText
+                commit('dataRequestError', { code: err.response.status, message: err.response.data.message });
+            }
+            return false;
+        }
     },
 
     // Get all the events for the active meet
@@ -74,6 +109,22 @@ const actions = {
         }
     },
 
+    // setActiveEvent - Save a reference to the active event identified by the event ID.
+    //                  payload => {event}
+    setActiveEvent({ commit }, payload) {
+        const eventId = payload._id;
+        const event = meetSvc.findEventById(state.activeMeet, eventId);
+        console.log(`meetStore.setActiveEvent for eventId=${eventId} returns meet %o`, event);
+        if (event) {
+            commit('setActiveEvent', event);
+            return true;
+        }
+        else {
+            console.log('meetStore.setActiveEvent failed, no event found.');
+            return false
+        }
+    },
+
     // setActiveMeet - Save a reference to the active meet and session
     //                 payload => { meetId, sessionNum }
     //                 Return true if we can find meet/session and false otherwise
@@ -86,12 +137,16 @@ const actions = {
             return true;
         }
         else {
+            console.log('meetStore.setActiveMeet failed, no meet found.');
             return false;
         }
     }
 };
 
 const mutations = {
+    clearEventData(state) {
+        state.activeEvent = false;
+    },
     clearMeetData(state) {
         state.meets = [];
         state.activeMeet = false;
@@ -104,6 +159,12 @@ const mutations = {
         state.loading = false;
         state.loadingError = `${err.code}: ${err.message}`;
     },
+    entryDataReceived(state, payload) {
+        state.loading = false;
+        // THIS DOES NOT SEEM TO BE REACTIVE, AND NEITHER WAS USING Vue.set()
+        // Vue.set(state.activeEvent, 'heats', payload);
+        state.activeEvent.heats = payload;
+    },
     eventDataReceived(state, payload) {
         state.loading = false;
         state.activeMeet.events = payload;
@@ -111,6 +172,9 @@ const mutations = {
     meetDataReceived(state, payload) {
         state.loading = false;
         state.meets = payload;
+    },
+    setActiveEvent(state, payload) {
+        state.activeEvent = payload;
     },
     setActiveMeet(state, payload) {
         state.activeMeet = payload;

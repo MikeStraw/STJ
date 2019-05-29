@@ -41,12 +41,12 @@
             </v-layout>
             <v-layout row v-if="authenticating">
                 <v-flex>
-                    <h1 color="info" >Authenticating ...</h1>
+                    <h3 class="blue--text" >Authenticating ...</h3>
                 </v-flex>
             </v-layout>
             <v-layout row v-if="authenticationErrorCode">
                 <v-flex>
-                    <h1 color="error" >{{authenticationErrorCode}} - {{authenticationError}}</h1>
+                    <p class="red--text text--darken-3 subheading" >{{authenticationErrorCode}} - {{authenticationError}}</p>
                     <v-btn small color="error" @click="clearErrorMessage">
                         Clear Error Message
                     </v-btn>
@@ -81,6 +81,7 @@ export default {
             this.$store.dispatch('auth/clearError');
         },
         logout() {
+            console.log('login.logout called.');
             this.$store.dispatch('auth/logout');
         },
         async submitForm() {

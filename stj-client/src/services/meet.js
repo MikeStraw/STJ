@@ -10,6 +10,18 @@ const findSessionByNumber = (sessions, sessNum) => {
 };
 
 const MeetSvc = {
+    findEventById(meet, eventId) {
+        let event = false;
+
+        if (meet && meet.events) {
+            event = meet.events.find(ev => ev._id === eventId);
+            if (event) {
+                event.heats = [];
+            }
+        }
+        return event;
+    },
+
     findMeetByIdAndSessionNum (meets, meetId, sessNum) {
         const meet = findMeetByID(meets, meetId);
         let meetWithSession = false;
