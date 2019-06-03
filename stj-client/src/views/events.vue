@@ -32,12 +32,14 @@ import { mapState } from 'vuex';
 
 export default {
     name: "events",
-    data: () => ({
-        headers: [
-            {text: 'Evt. #', value: 'number', sortable: false},
-            {text: 'Event Description', value: 'desc', sortable: false}
-        ]
-    }),
+    data: () => {
+        return {
+            headers: [
+                {text: 'Evt. #', value: 'number', sortable: false},
+                {text: 'Event Description', value: 'desc', sortable: false}
+            ]
+        }
+    },
     computed: {
         ...mapState({
             loading: state => state.meet.loading,
