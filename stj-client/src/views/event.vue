@@ -29,6 +29,29 @@
 
             </v-flex>
         </v-layout>
+
+        <v-layout row>
+            <v-flex xs3 sm2 md1>
+                <v-btn v-if="currentHeat > 1" flat @click="currentHeat -= 1">
+                    <v-icon left>navigate_before</v-icon>
+                    <span class="text-capitalize">Prev. Heat</span>
+                </v-btn>
+                <v-btn v-else flat>
+                    <v-icon left>navigate_before</v-icon>
+                    <span class="text-capitalize">Prev. Event</span>
+                </v-btn>
+            </v-flex>
+            <v-flex xs3 sm2 md1 offset-xs5 offset-sm7 offset-md9>
+                <v-btn v-if="currentHeat < numberOfHeats" flat @click="currentHeat +=1">
+                    <span class="text-capitalize">Next Heat</span>
+                    <v-icon right>navigate_next</v-icon>
+                </v-btn>
+                <v-btn v-else flat>
+                    <span class="text-capitalize">Next Event</span>
+                    <v-icon right>navigate_next</v-icon>
+                </v-btn>
+            </v-flex>
+        </v-layout>
     </v-container>
 </template>
 
@@ -49,7 +72,6 @@ export default {
     },
     computed: {
         ...mapState({
-
             event: state => state.meet.activeEvent,
             //heats: state => state.meet.activeEvent.heats,  // THIS WAS NOT REACTIVE FOR SOME REASON.
             loading: state => state.meet.loading,

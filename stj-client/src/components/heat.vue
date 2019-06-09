@@ -1,5 +1,5 @@
 <template>
-    <v-container fluid>
+    <v-container v-if="isCurrentHeat" fluid>
         <v-layout row>
             <v-flex row>
                 <h4>Heat {{heatNum}} of {{heatTotal}}</h4>
@@ -50,6 +50,9 @@ export default {
         }
     },
     props: ['entries', 'heatNum', 'heatTotal', 'selectedHeat'],
+    computed: {
+        isCurrentHeat() {return this.selectedHeat === this.heatNum }
+    },
     methods: {
         createEmptyEntry(lane) {
             return {'lane': lane, 'team': '', 'seed': '', 'final': '', 'athlete': this.emptyAthlete};
