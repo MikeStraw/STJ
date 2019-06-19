@@ -22,6 +22,7 @@ function main()
         }
 
         process.on('unhandledRejection', error => {reject(error);});
+
         const connectOpts = {
             useNewUrlParser: true,    // uses port number in DSN
             useFindAndModify: false   // findAndModify uses MongoDB's findAndModify

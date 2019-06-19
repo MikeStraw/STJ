@@ -44,7 +44,6 @@ export default {
         return {
             emptyAthlete: {'fname': '', 'lname': '', 'age': '', 'schoolYear': ''},
             heatEntries : [],
-            numLanes: 6,   // TODO:  should be prop
             selectedEntry: 0,
 
             headers: [
@@ -55,7 +54,7 @@ export default {
             ]
         }
     },
-    props: ['entries', 'heatNum', 'heatTotal', 'selectedHeat'],
+    props: ['entries', 'heatNum', 'heatTotal', 'numLanes', 'selectedHeat'],
 
     methods: {
         createEmptyEntry(lane) {

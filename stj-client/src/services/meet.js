@@ -17,6 +17,7 @@ const MeetSvc = {
             event = meet.events.find(ev => ev._id === eventId);
             if (event) {
                 event.heats = [];
+                event.numLanes = event.num_lanes ? event.num_lanes : meet.numLanes;
             }
         }
         return event;
@@ -30,7 +31,7 @@ const MeetSvc = {
             const sess = findSessionByNumber(meet.sessions, sessNum);
             if (sess) {
                 meetWithSession = {
-                    name: meet.name, date: meet.date, _id: meet._id,
+                    name: meet.name, date: meet.date, _id: meet._id, numLanes: meet.numLanes,
                     events: [],
                     session: { number: sess.number, name: sess.name, day: sess.day, time: sess.time }
                 };

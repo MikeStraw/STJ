@@ -11,18 +11,20 @@
 
                 <p v-if="numberOfHeats === 0">No entry information available.</p>
                 <relayHeat v-else-if="isRelayEvent"
-                      v-for="i in numberOfHeats"
-                      v-bind:key="heats[i-1]._id"
-                      v-bind:entries="heats[i-1].entries"
-                      v-bind:heat-num="i"
-                      v-bind:selected-heat="currentHeat"
-                      v-bind:heat-total="numberOfHeats">
+                           v-for="i in numberOfHeats"
+                           v-bind:key="heats[i-1]._id"
+                           v-bind:entries="heats[i-1].entries"
+                           v-bind:heat-num="i"
+                           v-bind:num-lanes="numberOfLanes"
+                           v-bind:selected-heat="currentHeat"
+                           v-bind:heat-total="numberOfHeats">
                 </relayHeat>
                 <heat v-else
                       v-for="i in numberOfHeats"
                       v-bind:key="heats[i-1]._id"
                       v-bind:entries="heats[i-1].entries"
                       v-bind:heat-num="i"
+                      v-bind:num-lanes="numberOfLanes"
                       v-bind:selected-heat="currentHeat"
                       v-bind:heat-total="numberOfHeats">
                 </heat>
@@ -86,8 +88,13 @@ export default {
         },
         numberOfHeats() {
             return this.heats.length;
+        },
+        numberOfLanes() {
+            return this.event.numLanes;
+        },
+        numberOfLanesInPool() {
+            return this.meet.numLanes;
         }
-
     },
     methods: {
         async loadEntries() {

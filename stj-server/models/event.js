@@ -3,10 +3,11 @@ const Schema   = mongoose.Schema;
 
 const EventSchema = new Schema(
     {
-        number:      {type: Number, required: true},
         desc:        {type: String, required: true},
         meet_id:     {type: String, required: true},
-        session_num: {type: Number, required: true},
+        number:      {type: Number, required: true},
+        num_lanes:   {type: Number, required: true},
+        session_num: {type: Number, required: true}
     }
 );
 

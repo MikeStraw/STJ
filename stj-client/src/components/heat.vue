@@ -36,7 +36,6 @@ export default {
         return {
             emptyAthlete: {'fname': '', 'lname': '', 'age': '', 'schoolYear': ''},
             heatEntries: [],
-            numLanes: 6,   // TODO:  should be prop
             selectedEntry: 0,
 
             headers: [
@@ -49,7 +48,7 @@ export default {
             ]
         }
     },
-    props: ['entries', 'heatNum', 'heatTotal', 'selectedHeat'],
+    props: ['entries', 'heatNum', 'heatTotal', 'numLanes', 'selectedHeat'],
     computed: {
         isCurrentHeat() {return this.selectedHeat === this.heatNum }
     },

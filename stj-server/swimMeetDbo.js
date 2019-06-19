@@ -70,8 +70,8 @@ function makeHeatEntryFromEventEntry(eventEntry) {
 
 function saveEventData(eventJson) {
     // we don't want to save the entry data here
-    const event      = {"number": eventJson.number, "desc": eventJson.desc,
-                        "meet_id": eventJson.meet_id, "session_num": eventJson.session_num};
+    const event      = {"desc": eventJson.desc, "meet_id": eventJson.meet_id, "number": eventJson.number,
+                        "num_lanes": eventJson.numLanes, "session_num": eventJson.session_num};
     const queryObj   = {"meet_id": eventJson.meet_id, "number": eventJson.number, "session_num": eventJson.session_num};
     const updateOpts = {"new": true, "upsert": true, "runValidators": true};
 
